@@ -1,8 +1,12 @@
-
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final String selectedRole;
+
+  const RegisterPage({
+    super.key,
+    required this.selectedRole,
+  });
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -15,6 +19,17 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -285,7 +300,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    print("Sign up clicked");
+                    print("Sign up clicked as ${widget.selectedRole}");
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF30B8AD),
