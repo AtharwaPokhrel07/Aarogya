@@ -10,11 +10,12 @@ class RecoverAccountScreen extends StatefulWidget {
       _RecoverAccountScreenState();
 }
 
-class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
+class _RecoverAccountScreenState
+    extends State<RecoverAccountScreen> {
   String selectedMethod = '';
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
 
   final Color teal = const Color(0xFF30B8AD);
   final Color navy = const Color(0xFF141B2D);
@@ -27,7 +28,6 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
     super.dispose();
   }
 
-  // Creates the Email and Phone Number selection boxes.
   Widget methodBox(String title, IconData icon) {
     bool selected = selectedMethod == title;
 
@@ -42,18 +42,24 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
           height: 95,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: selected ? const Color(0xFFEAF9F6) : Colors.white,
+            color: selected
+                ? const Color(0xFFEAF9F6)
+                : Colors.white,
             border: Border.all(
-              color: selected ? teal : const Color(0xFFDCE5EF),
+              color: selected
+                  ? teal
+                  : const Color(0xFFDCE5EF),
             ),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment:
+            MainAxisAlignment.spaceBetween,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(
                     icon,
@@ -63,7 +69,9 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
                     selected
                         ? Icons.radio_button_checked
                         : Icons.radio_button_unchecked,
-                    color: selected ? teal : Colors.blueGrey,
+                    color: selected
+                        ? teal
+                        : Colors.blueGrey,
                   ),
                 ],
               ),
@@ -82,12 +90,13 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
     );
   }
 
-  // Checks the input and opens the Recovery Code screen.
   void sendCode() {
     if (selectedMethod.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select Email or Phone Number'),
+          content: Text(
+            'Please select Email or Phone Number',
+          ),
         ),
       );
       return;
@@ -96,10 +105,14 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
     if (selectedMethod == 'Email') {
       String email = emailController.text.trim();
 
-      if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email)) {
+      if (!RegExp(
+        r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
+      ).hasMatch(email)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please enter a valid email address'),
+            content: Text(
+              'Please enter a valid email address',
+            ),
           ),
         );
         return;
@@ -112,7 +125,9 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
       if (!RegExp(r'^\d{10}$').hasMatch(phone)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please enter a valid 10-digit phone number'),
+            content: Text(
+              'Please enter a valid 10-digit phone number',
+            ),
           ),
         );
         return;
@@ -131,6 +146,10 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -140,11 +159,13 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
                   minHeight: constraints.maxHeight,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                  ),
                   child: Column(
                     children: [
                       SizedBox(
-                        height: constraints.maxHeight * 0.16,
+                        height: constraints.maxHeight * 0.12,
                       ),
 
                       Image.asset(
@@ -198,13 +219,18 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
 
                       Row(
                         children: [
-                          methodBox('Email', Icons.mail_outline),
+                          methodBox(
+                            'Email',
+                            Icons.mail_outline,
+                          ),
                           const SizedBox(width: 12),
-                          methodBox('Phone Number', Icons.phone_android),
+                          methodBox(
+                            'Phone Number',
+                            Icons.phone_android,
+                          ),
                         ],
                       ),
 
-                      // Shows the input field only after selection.
                       if (selectedMethod.isNotEmpty) ...[
                         const SizedBox(height: 22),
 
@@ -241,20 +267,16 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
                                   : Icons.phone_android,
                               color: grey,
                             ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 16,
-                              horizontal: 14,
-                            ),
                             enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius:
+                              BorderRadius.circular(12),
                               borderSide: const BorderSide(
                                 color: Color(0xFFDCE5EF),
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius:
+                              BorderRadius.circular(12),
                               borderSide: BorderSide(
                                 color: teal,
                                 width: 2,
@@ -276,7 +298,8 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(11),
+                              borderRadius:
+                              BorderRadius.circular(11),
                             ),
                           ),
                           child: const FittedBox(
@@ -292,16 +315,13 @@ class _RecoverAccountScreenState extends State<RecoverAccountScreen> {
                       ),
 
                       SizedBox(
-                        height: constraints.maxHeight * 0.12,
+                        height: constraints.maxHeight * 0.10,
                       ),
 
                       Container(
                         width: 28,
                         height: 3,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF2196E8),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                        color: const Color(0xFF2196E8),
                       ),
 
                       const SizedBox(height: 12),
