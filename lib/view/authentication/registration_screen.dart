@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'verification_method.dart';
 
 class RegisterPage extends StatefulWidget {
   final String selectedRole;
@@ -13,12 +15,15 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  static const Color teal = Color(0xFF30B8AD);
+  static const Color tealLight = Color(0xFFBFE9E7);
 
   @override
   void dispose() {
@@ -31,22 +36,78 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  Widget buildInputField(
+      String hint,
+      TextEditingController controller, {
+        bool obscureText = false,
+        TextInputType keyboardType = TextInputType.text,
+      }) {
+    return SizedBox(
+      height: 49,
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        style: const TextStyle(
+          fontSize: 15,
+          color: Colors.black,
+        ),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: const TextStyle(
+            fontSize: 15,
+            color: Colors.black87,
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 22,
+            vertical: 12,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(23),
+            borderSide: const BorderSide(
+              color: tealLight,
+              width: 3,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(23),
+            borderSide: const BorderSide(
+              color: teal,
+              width: 3,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void goToVerificationPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+        const VerificationMethodPage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 26),
-          child: Column(
-            children: [
-              const SizedBox(height: 8),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 22,
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 35),
 
-              // Back arrow
-              Row(
-                children: [
-                  IconButton(
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
                     onPressed: () {
                       if (Navigator.canPop(context)) {
                         Navigator.pop(context);
@@ -58,329 +119,151 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.black,
                     ),
                   ),
-                ],
-              ),
-
-              const SizedBox(height: 4),
-
-              // Registration illustration
-              Image.asset(
-                'assets/images/register_illustration.png',
-                height: 170,
-                width: 260,
-                fit: BoxFit.contain,
-              ),
-
-              const SizedBox(height: 8),
-
-              // Sign up heading
-              const Text(
-                "Sign up",
-                style: TextStyle(
-                  fontSize: 27,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
                 ),
-              ),
 
-              const SizedBox(height: 18),
+                const SizedBox(height: 10),
 
-              // First name and last name
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: firstNameController,
-                      style: const TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                        hintText: "First name",
-                        hintStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 12,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xFFBFEAE8),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xFF30B8AD),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                Image.asset(
+                  'assets/images/register_illustration.png',
+                  height: 150,
+                  width: 150,
+                  fit: BoxFit.contain,
+                ),
+
+                const SizedBox(height: 53),
+
+                const Text(
+                  'Sign up',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: buildInputField(
+                        'First name',
+                        firstNameController,
+                      ),
+                    ),
+
+                    const SizedBox(width: 6),
+
+                    Expanded(
+                      child: buildInputField(
+                        'Last name',
+                        lastNameController,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 9),
+
+                buildInputField(
+                  'Email',
+                  emailController,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+
+                const SizedBox(height: 9),
+
+                buildInputField(
+                  'Phone Number',
+                  phoneController,
+                  keyboardType: TextInputType.phone,
+                ),
+
+                const SizedBox(height: 9),
+
+                buildInputField(
+                  'Create Password',
+                  passwordController,
+                  obscureText: true,
+                ),
+
+                const SizedBox(height: 9),
+
+                buildInputField(
+                  'Confirm Password',
+                  confirmPasswordController,
+                  obscureText: true,
+                ),
+
+                const SizedBox(height: 7),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: goToVerificationPage,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: teal,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'Sign up',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                ),
 
-                  const SizedBox(width: 8),
+                const SizedBox(height: 10),
 
-                  Expanded(
-                    child: TextFormField(
-                      controller: lastNameController,
-                      style: const TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                        hintText: "Last name",
-                        hintStyle: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 12,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xFFBFEAE8),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xFF30B8AD),
-                            width: 3,
-                          ),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                const Text(
+                  'or sign up with',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                ),
+
+                const SizedBox(height: 5),
+
+                Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Image.asset(
+                        'assets/images/google.png',
+                        height: 30,
+                        width: 30,
+                        fit: BoxFit.contain,
                       ),
                     ),
-                  ),
-                ],
-              ),
 
-              const SizedBox(height: 7),
+                    const SizedBox(width: 20),
 
-              // Email
-              TextFormField(
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                style: const TextStyle(fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: "Email",
-                  hintStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 12,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFFBFEAE8),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF30B8AD),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 7),
-
-              // Phone number
-              TextFormField(
-                controller: phoneController,
-                keyboardType: TextInputType.phone,
-                style: const TextStyle(fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: "Phone Number",
-                  hintStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 12,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFFBFEAE8),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF30B8AD),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 7),
-
-              // Create password
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                style: const TextStyle(fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: "Create Password",
-                  hintStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 12,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFFBFEAE8),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF30B8AD),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 7),
-
-              // Confirm password
-              TextFormField(
-                controller: confirmPasswordController,
-                obscureText: true,
-                style: const TextStyle(fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: "Confirm Password",
-                  hintStyle: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 22,
-                    vertical: 12,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFFBFEAE8),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF30B8AD),
-                      width: 3,
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // Sign up button
-              SizedBox(
-                height: 48,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    print("Sign up clicked as ${widget.selectedRole}");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF30B8AD),
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(35),
-                    ),
-                  ),
-                  child: const Text(
-                    "Sign up",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              // Social sign up text
-              const Text(
-                "or sign up with",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-
-              const SizedBox(height: 5),
-
-              // Clickable Google and Facebook buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        print("Google clicked");
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Image.asset(
-                          'assets/images/google.png',
-                          height: 30,
-                          width: 30,
-                          fit: BoxFit.contain,
-                        ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Image.asset(
+                        'assets/images/facebook.png',
+                        height: 30,
+                        width: 30,
+                        fit: BoxFit.contain,
                       ),
                     ),
-                  ),
+                  ],
+                ),
 
-                  const SizedBox(width: 18),
-
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        print("Facebook clicked");
-                      },
-                      borderRadius: BorderRadius.circular(30),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: Image.asset(
-                          'assets/images/facebook.png',
-                          height: 30,
-                          width: 30,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-            ],
+                const SizedBox(height: 35),
+              ],
+            ),
           ),
         ),
       ),
