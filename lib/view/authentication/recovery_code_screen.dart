@@ -6,21 +6,27 @@ class RecoveryCodeScreen extends StatefulWidget {
   const RecoveryCodeScreen({super.key});
 
   @override
-  State<RecoveryCodeScreen> createState() => _RecoveryCodeScreenState();
+  State<RecoveryCodeScreen> createState() =>
+      _RecoveryCodeScreenState();
 }
 
-class _RecoveryCodeScreenState extends State<RecoveryCodeScreen> {
+class _RecoveryCodeScreenState
+    extends State<RecoveryCodeScreen> {
   final Color teal = const Color(0xFF30B8AD);
   final Color navy = const Color(0xFF141B2D);
   final Color grey = const Color(0xFF687B98);
 
-  // Stores the six OTP digits.
   final List<TextEditingController> controllers =
-  List.generate(6, (index) => TextEditingController());
+  List.generate(
+    6,
+        (index) => TextEditingController(),
+  );
 
-  // Controls which OTP box is selected.
   final List<FocusNode> focusNodes =
-  List.generate(6, (index) => FocusNode());
+  List.generate(
+    6,
+        (index) => FocusNode(),
+  );
 
   @override
   void dispose() {
@@ -42,26 +48,30 @@ class _RecoveryCodeScreenState extends State<RecoveryCodeScreen> {
       code += controller.text;
     }
 
-    if (code.length == 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Code submitted successfully'),
-        ),
-      );
-    } else {
+    if (code.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter all 6 digits'),
         ),
       );
+      return;
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Code entered. Backend verification is not connected yet.',
+        ),
+      ),
+    );
   }
 
-  // Creates one OTP input box.
   Widget otpBox(int index) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.only(right: index == 5 ? 0 : 8),
+        padding: EdgeInsets.only(
+          right: index == 5 ? 0 : 8,
+        ),
         child: SizedBox(
           height: 59,
           child: TextField(
@@ -83,7 +93,10 @@ class _RecoveryCodeScreenState extends State<RecoveryCodeScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: teal, width: 2),
+                borderSide: BorderSide(
+                  color: teal,
+                  width: 2,
+                ),
               ),
             ),
             onChanged: (value) {
@@ -111,10 +124,15 @@ class _RecoveryCodeScreenState extends State<RecoveryCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    bool keyboardOpen =
+        MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: SizedBox(
@@ -122,9 +140,12 @@ class _RecoveryCodeScreenState extends State<RecoveryCodeScreen> {
                 ? 650
                 : MediaQuery.of(context).size.height -
                 MediaQuery.of(context).padding.top -
-                MediaQuery.of(context).padding.bottom,
+                MediaQuery.of(context).padding.bottom -
+                kToolbarHeight,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
               child: Column(
                 children: [
                   const Spacer(flex: 3),
@@ -182,9 +203,12 @@ class _RecoveryCodeScreenState extends State<RecoveryCodeScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(
                             const SnackBar(
-                              content: Text('Resend Code clicked'),
+                              content: Text(
+                                'Resend Code is not connected yet',
+                              ),
                             ),
                           );
                         },
@@ -211,7 +235,8 @@ class _RecoveryCodeScreenState extends State<RecoveryCodeScreen> {
                         backgroundColor: teal,
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11),
+                          borderRadius:
+                          BorderRadius.circular(11),
                         ),
                       ),
                       child: const Text(
