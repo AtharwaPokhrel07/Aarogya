@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "410837556892",
+    "project_id": "atharva-e5e44",
+    "storage_bucket": "atharva-e5e44.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410837556892:android:a1c61760fc0abebcfcd759",
+        "android_client_info": {
+          "package_name": "com.aarogya.aarogya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9PT_TVGu_b2MwGZqFP_Sg33fzDiXkPnw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
