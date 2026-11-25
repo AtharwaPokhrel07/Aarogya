@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:aarogya/view/body/home_screen.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({super.key});
@@ -9,7 +11,6 @@ class OtpPage extends StatefulWidget {
 }
 
 class _OtpPageState extends State<OtpPage> {
-  // ---- Colours (replace with exact Figma hex codes if different) ----
   static const Color primaryBlue = Color(0xFF2D8FDD);
   static const Color turquoise = Color(0xFF2FB9A8);
   static const Color iconBoxBackground = Color(0xFFE8F7F4);
@@ -19,63 +20,69 @@ class _OtpPageState extends State<OtpPage> {
 
   static const int otpLength = 6;
 
-  // One controller and one focus node for each of the 6 boxes
   final List<TextEditingController> _controllers =
   List.generate(otpLength, (_) => TextEditingController());
+
   final List<FocusNode> _focusNodes =
   List.generate(otpLength, (_) => FocusNode());
 
   @override
   void dispose() {
-    // Clean up to avoid memory leaks
     for (final c in _controllers) {
       c.dispose();
     }
+
     for (final f in _focusNodes) {
       f.dispose();
     }
+
     super.dispose();
   }
 
-  // Called every time the user types in a box
   void _onOtpChanged(String value, int index) {
     if (value.isNotEmpty && index < otpLength - 1) {
-      // Typed a digit -> jump to the next box
       _focusNodes[index + 1].requestFocus();
     } else if (value.isEmpty && index > 0) {
-      // Deleted a digit -> go back to the previous box
       _focusNodes[index - 1].requestFocus();
     }
   }
 
   void _onResendPressed() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('A new code has been sent')),
+      const SnackBar(
+        content: Text('A new code has been sent'),
+      ),
     );
-    // TODO: call your backend/repository to resend the code
   }
 
   void _onVerifyPressed() {
-    final String code = _controllers.map((c) => c.text).join();
+    final String code =
+    _controllers.map((c) => c.text).join();
 
     if (code.length < otpLength) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter the full 6-digit code')),
+        const SnackBar(
+          content: Text('Please enter the full 6-digit code'),
+        ),
       );
       return;
     }
 
-    // TODO: check the code with your backend, then go to the next screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Code entered: $code')),
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+          (route) => false,
     );
   }
 
-  // One OTP box
   Widget _buildOtpBox(int index) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.only(right: index == otpLength - 1 ? 0 : 8),
+        padding: EdgeInsets.only(
+          right: index == otpLength - 1 ? 0 : 8,
+        ),
         child: SizedBox(
           height: 48,
           child: TextField(
@@ -89,10 +96,13 @@ class _OtpPageState extends State<OtpPage> {
               fontWeight: FontWeight.bold,
               color: titleColor,
             ),
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            onChanged: (value) => _onOtpChanged(value, index),
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            onChanged: (value) =>
+                _onOtpChanged(value, index),
             decoration: InputDecoration(
-              counterText: '', // hides the "0/1" counter
+              counterText: '',
               hintText: '-',
               hintStyle: const TextStyle(
                 fontSize: 18,
@@ -102,11 +112,16 @@ class _OtpPageState extends State<OtpPage> {
               contentPadding: EdgeInsets.zero,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: borderColor),
+                borderSide: const BorderSide(
+                  color: borderColor,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: turquoise, width: 1.5),
+                borderSide: const BorderSide(
+                  color: turquoise,
+                  width: 1.5,
+                ),
               ),
             ),
           ),
@@ -124,12 +139,13 @@ class _OtpPageState extends State<OtpPage> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                ),
                 child: Column(
                   children: [
                     const SizedBox(height: 90),
 
-                    // Shield icon in a light box
                     Container(
                       width: 120,
                       height: 110,
@@ -143,9 +159,9 @@ class _OtpPageState extends State<OtpPage> {
                         color: primaryBlue,
                       ),
                     ),
+
                     const SizedBox(height: 16),
 
-                    // Title
                     const Text(
                       'Enter Verification Code',
                       style: TextStyle(
@@ -154,9 +170,9 @@ class _OtpPageState extends State<OtpPage> {
                         color: titleColor,
                       ),
                     ),
+
                     const SizedBox(height: 8),
 
-                    // Subtitle
                     const Text(
                       'Enter the 6-digit verification code sent to your selected email or phone.',
                       textAlign: TextAlign.center,
@@ -166,24 +182,28 @@ class _OtpPageState extends State<OtpPage> {
                         height: 1.4,
                       ),
                     ),
+
                     const SizedBox(height: 28),
 
-                    // 6 OTP boxes
                     Row(
                       children: List.generate(
                         otpLength,
                             (index) => _buildOtpBox(index),
                       ),
                     ),
+
                     const SizedBox(height: 16),
 
-                    // Resend row
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
                       children: [
                         const Text(
                           "Didn't receive the code? ",
-                          style: TextStyle(fontSize: 13, color: subtitleColor),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: subtitleColor,
+                          ),
                         ),
                         GestureDetector(
                           onTap: _onResendPressed,
@@ -198,9 +218,9 @@ class _OtpPageState extends State<OtpPage> {
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 20),
 
-                    // Verify Code button
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -211,7 +231,8 @@ class _OtpPageState extends State<OtpPage> {
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius:
+                            BorderRadius.circular(10),
                           ),
                         ),
                         child: const Text(
@@ -228,16 +249,22 @@ class _OtpPageState extends State<OtpPage> {
               ),
             ),
 
-            // Footer (always at the bottom)
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Column(
                 children: [
-                  Container(width: 20, height: 2, color: primaryBlue),
+                  Container(
+                    width: 20,
+                    height: 2,
+                    color: primaryBlue,
+                  ),
                   const SizedBox(height: 8),
                   const Text(
                     'Your account security is important to us.',
-                    style: TextStyle(fontSize: 11, color: subtitleColor),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: subtitleColor,
+                    ),
                   ),
                 ],
               ),
