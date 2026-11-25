@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'choose_role_screen.dart';
 import 'recover_account_screen.dart';
+import 'package:aarogya/view/body/home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -31,7 +32,13 @@ class _LoginPageState extends State<LoginPage> {
   void login() {
     if (emailController.text.trim() == demoId &&
         passController.text == demoPassword) {
-      showMessage('Login successful');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+            (route) => false,
+      );
     } else {
       showMessage('Incorrect email/phone or password');
     }
@@ -57,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: [
             Image.asset(
-              'lib/assets/image/loginpage.png',
+              'assets/images/loginpage.png',
               height: 260,
             ),
 
@@ -222,12 +229,12 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'lib/assets/image/googlelogo.png',
+                  'assets/images/googlelogo.png',
                   height: 60,
                 ),
                 const SizedBox(width: 8),
                 Image.asset(
-                  'lib/assets/image/facebooklogo.png',
+                  'assets/images/facebooklogo.png',
                   height: 60,
                 ),
               ],
